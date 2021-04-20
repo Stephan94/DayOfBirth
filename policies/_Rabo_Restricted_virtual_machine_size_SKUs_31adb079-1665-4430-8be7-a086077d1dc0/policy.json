@@ -1,0 +1,49 @@
+{
+ "properties": {
+  "displayName": "[Rabo] Restricted virtual machine size SKUs",
+  "policyType": "Custom",
+  "mode": "Indexed",
+  "description": "This policy contains a list of restricted Virtual Machine sizes in the Raboweb tenant.\nIf you want to request a certain Virtual Machine size that is not available, please raise a ticket at the Cloud Competence Center via https://tools.rabobank.nl",
+  "metadata": {
+   "category": "Compute",
+   "createdBy": "6706815c-9e6c-4bbb-a2fe-03f4b02dbd29",
+   "createdOn": "2021-04-08T13:58:16.3110888Z",
+   "updatedBy": "6706815c-9e6c-4bbb-a2fe-03f4b02dbd29",
+   "updatedOn": "2021-04-13T13:18:10.7518223Z"
+  },
+  "parameters": {
+   "listOfForbiddenSKUs": {
+    "type": "Array",
+    "metadata": {
+     "displayName": "Forbidden Size SKUs",
+     "description": "The list of size SKUs that cannot be used for virtual machines.",
+     "strongType": "VMSKUs"
+    }
+   }
+  },
+  "policyRule": {
+   "if": {
+    "allOf": [
+     {
+      "field": "type",
+      "equals": "Microsoft.Compute/virtualMachines"
+     },
+     {
+      "field": "Microsoft.Compute/virtualMachines/sku.name",
+      "in": "[parameters('listOfForbiddenSKUs')]"
+     },
+     {
+      "field": "tags.AcceptedException_VM-H-007",
+      "exists": "false"
+     }
+    ]
+   },
+   "then": {
+    "effect": "audit"
+   }
+  }
+ },
+ "id": "/subscriptions/b08e21d4-b255-4ab7-8d83-375e5f4692e7/providers/Microsoft.Authorization/policyDefinitions/31adb079-1665-4430-8be7-a086077d1dc0",
+ "type": "Microsoft.Authorization/policyDefinitions",
+ "name": "31adb079-1665-4430-8be7-a086077d1dc0"
+}
